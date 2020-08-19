@@ -34,11 +34,13 @@ public class CouponService {
 	public List<Coupon> getAllCoupons() {
 		return couponRepository.findAll();
 	}
-	public void addCouponPurchase(int customerID,int couponID) {
+
+	public void addCouponPurchase(int customerID, int couponID) {
 		couponRepository.addCouponPurchase(customerID, couponID);
 	}
-	public void deleteCouponPurchase(int customerID,int couponID) {
+
+	public void deleteCouponPurchase(int customerID, int couponID) {
 		couponRepository.deleteCouponPurchase(customerID, couponID);
 	}
-		
+
 }

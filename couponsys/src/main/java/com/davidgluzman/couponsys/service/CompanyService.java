@@ -37,7 +37,7 @@ public class CompanyService {
 	}
 
 	public boolean isCompanyExist(String email, String password) {
-		return (companyRepository.findByEmailAndPassword(email, password)!=null);
+		return (companyRepository.findByEmailAndPassword(email, password) != null);
 
 	}
 }

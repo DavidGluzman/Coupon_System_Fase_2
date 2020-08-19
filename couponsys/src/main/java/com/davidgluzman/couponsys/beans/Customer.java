@@ -29,8 +29,9 @@ public class Customer {
 
 	private String email;
 	private String password;
-	@ManyToMany(cascade = CascadeType.MERGE,fetch = FetchType.EAGER)
+	@ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
 	private List<Coupon> coupons;
+
 	public Customer(String firstName, String lastName, String email, String password, List<Coupon> coupons) {
 		super();
 		this.firstName = firstName;

@@ -1,6 +1,5 @@
 package com.davidgluzman.couponsys.clr;
 
-import java.util.Arrays;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,29 +10,30 @@ import org.springframework.stereotype.Component;
 import com.davidgluzman.couponsys.beans.Category;
 import com.davidgluzman.couponsys.beans.Coupon;
 import com.davidgluzman.couponsys.beans.Customer;
-import com.davidgluzman.couponsys.repository.CouponRepository;
 import com.davidgluzman.couponsys.service.CouponService;
 import com.davidgluzman.couponsys.service.CustomerService;
 import com.davidgluzman.couponsys.utils.DateUtils;
 import com.davidgluzman.couponsys.utils.HeadersArtUtils;
 import com.davidgluzman.couponsys.utils.TablesAndLinesUtils;
+
 @Component
 @Order(3)
-public class CouponServiceTest implements CommandLineRunner{
-@Autowired
-private CouponService couponService;
-@Autowired
-private CustomerService customerService;
+public class CouponServiceTest implements CommandLineRunner {
+	@Autowired
+	private CouponService couponService;
+	@Autowired
+	private CustomerService customerService;
+
 	@Override
 	public void run(String... args) throws Exception {
-		
+
 		String string;
-		
+
 		HeadersArtUtils.printCouponServiceHeader();
-		
-		//creating coupons
-		
-		Coupon coupon =new Coupon();
+
+// creating coupons
+
+		Coupon coupon = new Coupon();
 		coupon.setCompanyID(2);
 		coupon.setCategory(Category.Food);
 		coupon.setTitle("50%");
@@ -43,8 +43,8 @@ private CustomerService customerService;
 		coupon.setAmount(500);
 		coupon.setPrice(2.5);
 		coupon.setImage("image");
-		
-		Coupon coupon2=new Coupon();
+
+		Coupon coupon2 = new Coupon();
 		coupon2.setCompanyID(2);
 		coupon2.setCategory(Category.Food);
 		coupon2.setTitle("1+1");
@@ -54,69 +54,69 @@ private CustomerService customerService;
 		coupon2.setAmount(1000);
 		coupon2.setPrice(5);
 		coupon2.setImage("image");
-		
-		//confirming coupons table is empty
-		
-		string="confirming coupons table is empty";
-		TablesAndLinesUtils.printCouponsTable(couponService.getAllCoupons(),string);
-		
-		//adding coupons to DB
-		
+
+// confirming coupons table is empty
+
+		string = "confirming coupons table is empty";
+		TablesAndLinesUtils.printCouponsTable(couponService.getAllCoupons(), string);
+
+// adding coupons to DB
+
 		couponService.addCoupon(coupon);
 		couponService.addCoupon(coupon2);
-		string="checking addCoupon method (50% and 1+1 has been added)";
+		string = "checking addCoupon method (50% and 1+1 has been added)";
 		TablesAndLinesUtils.printCouponsTable(couponService.getAllCoupons(), string);
-	
-		//updating coupon in DB
-		
+
+// updating coupon in DB
+
 		coupon.setDescription("updated");
 		couponService.updateCoupon(coupon);
-		string="checking updateCoupon method (50% - description updated)";
+		string = "checking updateCoupon method (50% - description updated)";
 		TablesAndLinesUtils.printCouponsTable(couponService.getAllCoupons(), string);
-	
-		//checking deleteCoupon method
-		
+
+// checking deleteCoupon method
+
 		couponService.deleteCoupon(1);
-		string="checking deleteCoupon method (50% has been deleted)";
+		string = "checking deleteCoupon method (50% has been deleted)";
 		TablesAndLinesUtils.printCouponsTable(couponService.getAllCoupons(), string);
-		
-		//checking getOneCoupon method
-		
+
+// checking getOneCoupon method
+
 		TablesAndLinesUtils.printLine();
 		System.out.println("checking getOneCoupon method (getting 1+1)");
 		System.out.println();
 		System.out.println(couponService.getOneCoupon(2));
-		
-		//adding another customer for testing purposes
-		
+
+// adding another customer for testing purposes
+
 		Customer customer = new Customer();
 		customer.setFirstName("Moshe");
 		customer.setLastName("Moshe");
 		customer.setEmail("moshemoshe@email.com");
 		customer.setPassword("pass");
-		
+
 		customerService.addCustomer(customer);
-		
-		//confirming customers in customers table has no purchases 
-		
-		string="confirming customers in customers table has no purchases";
+
+// confirming customers in customers table has no purchases
+
+		string = "confirming customers in customers table has no purchases";
 		TablesAndLinesUtils.printCustomersTable(customerService.getAllCustomers(), string);
-		
-		//checking addCouponPurchase method
-		
+
+// checking addCouponPurchase method
+
 		couponService.addCouponPurchase(customer.getId(), coupon2.getId());
 
-		string="checking addCouponPurchase method (Moshe purchased 1+1 coupon)";
+		string = "checking addCouponPurchase method (Moshe purchased 1+1 coupon)";
 		TablesAndLinesUtils.printCustomersTable(customerService.getAllCustomers(), string);
-		
-		//checking deleteCouponPurchase method
-		
+
+// checking deleteCouponPurchase method
+
 		couponService.deleteCouponPurchase(customer.getId(), coupon2.getId());
-		
-		string="checking deleteCouponPurchase method (Moshes 1+1 coupon purchase has been deleted)";
+
+		string = "checking deleteCouponPurchase method (Moshes 1+1 coupon purchase has been deleted)";
 		TablesAndLinesUtils.printCustomersTable(customerService.getAllCustomers(), string);
 		TablesAndLinesUtils.printLine();
-		
+
 	}
 
 }

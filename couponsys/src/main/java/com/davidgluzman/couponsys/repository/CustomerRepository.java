@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.davidgluzman.couponsys.beans.Customer;
 
-public interface CustomerRepository extends JpaRepository<Customer	, Integer>{
+public interface CustomerRepository extends JpaRepository<Customer, Integer> {
 	Customer findByEmailAndPassword(String email, String password);
 
 }

@@ -28,8 +28,7 @@ public class Company {
 	private String name;
 	private String email;
 	private String password;
-	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Coupon> coupons;
-	
-	
+
 }
