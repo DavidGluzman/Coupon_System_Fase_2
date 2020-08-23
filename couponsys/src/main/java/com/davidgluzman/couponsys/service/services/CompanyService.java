@@ -1,4 +1,4 @@
-package com.davidgluzman.couponsys.service;
+package com.davidgluzman.couponsys.service.services;
 
 import java.util.List;
 import java.util.Optional;

@@ -5,7 +5,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import com.davidgluzman.couponsys.beans.Company;
-import com.davidgluzman.couponsys.service.CompanyService;
+import com.davidgluzman.couponsys.service.services.CompanyService;
 import com.davidgluzman.couponsys.utils.HeadersArtUtils;
 import com.davidgluzman.couponsys.utils.TablesAndLinesUtils;
 
@@ -27,12 +27,12 @@ public class CompanyServiceTest implements org.springframework.boot.CommandLineR
 
 		Company company = new Company();
 		company.setName("Koka kola");
-		company.setEmail("cs@kokakola.com");
+		company.setEmail("service@kokakola.com");
 		company.setPassword("pass");
 
 		Company company2 = new Company();
 		company2.setName("Fefsi");
-		company2.setEmail("cs@fefsi.com");
+		company2.setEmail("service@fefsi.com");
 		company2.setPassword("pass");
 
 // confirming companies table is empty
@@ -56,7 +56,7 @@ public class CompanyServiceTest implements org.springframework.boot.CommandLineR
 
 // checking deleteCompany method
 
-		companyService.deleteCompany(1);
+		companyService.deleteCompany(company.getId());
 		string = "checking deleteCompany method (koka kola has been deleted)";
 		TablesAndLinesUtils.printCompaniesTable(companyService.getAllCompanies(), string);
 
@@ -65,7 +65,7 @@ public class CompanyServiceTest implements org.springframework.boot.CommandLineR
 		TablesAndLinesUtils.printLine();
 		System.out.println("checking getOneCompany method (getting Fefsi)");
 		System.out.println();
-		System.out.println(companyService.getOneCompany(2));
+		System.out.println(companyService.getOneCompany(company2.getId()).get());
 
 // checking isCompanyExist method
 
@@ -73,7 +73,7 @@ public class CompanyServiceTest implements org.springframework.boot.CommandLineR
 		System.out.println("checking isCompanyExist method (checking if Fefsi Exists)");
 		System.out.println();
 		System.out.print("Fefsi Exists? - ");
-		System.out.println(companyService.isCompanyExist("cs@fefsi.com", "pass"));
+		System.out.println(companyService.isCompanyExist("service@fefsi.com", "pass"));
 		TablesAndLinesUtils.printLine();
 	}
 

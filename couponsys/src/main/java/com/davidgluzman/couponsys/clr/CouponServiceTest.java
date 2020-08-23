@@ -1,6 +1,8 @@
 package com.davidgluzman.couponsys.clr;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -10,8 +12,8 @@ import org.springframework.stereotype.Component;
 import com.davidgluzman.couponsys.beans.Category;
 import com.davidgluzman.couponsys.beans.Coupon;
 import com.davidgluzman.couponsys.beans.Customer;
-import com.davidgluzman.couponsys.service.CouponService;
-import com.davidgluzman.couponsys.service.CustomerService;
+import com.davidgluzman.couponsys.service.services.CouponService;
+import com.davidgluzman.couponsys.service.services.CustomerService;
 import com.davidgluzman.couponsys.utils.DateUtils;
 import com.davidgluzman.couponsys.utils.HeadersArtUtils;
 import com.davidgluzman.couponsys.utils.TablesAndLinesUtils;
@@ -76,7 +78,7 @@ public class CouponServiceTest implements CommandLineRunner {
 
 // checking deleteCoupon method
 
-		couponService.deleteCoupon(1);
+		couponService.deleteCoupon(coupon.getId());
 		string = "checking deleteCoupon method (50% has been deleted)";
 		TablesAndLinesUtils.printCouponsTable(couponService.getAllCoupons(), string);
 
@@ -85,7 +87,7 @@ public class CouponServiceTest implements CommandLineRunner {
 		TablesAndLinesUtils.printLine();
 		System.out.println("checking getOneCoupon method (getting 1+1)");
 		System.out.println();
-		System.out.println(couponService.getOneCoupon(2));
+		System.out.println(couponService.getOneCoupon(coupon2.getId()).get());
 
 // adding another customer for testing purposes
 
@@ -117,6 +119,8 @@ public class CouponServiceTest implements CommandLineRunner {
 		TablesAndLinesUtils.printCustomersTable(customerService.getAllCustomers(), string);
 		TablesAndLinesUtils.printLine();
 
+		
+		
 	}
 
 }

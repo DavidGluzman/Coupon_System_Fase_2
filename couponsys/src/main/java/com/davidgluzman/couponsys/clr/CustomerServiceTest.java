@@ -6,7 +6,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import com.davidgluzman.couponsys.beans.Customer;
-import com.davidgluzman.couponsys.service.CustomerService;
+import com.davidgluzman.couponsys.service.services.CustomerService;
 import com.davidgluzman.couponsys.utils.HeadersArtUtils;
 import com.davidgluzman.couponsys.utils.TablesAndLinesUtils;
 
@@ -59,7 +59,7 @@ public class CustomerServiceTest implements CommandLineRunner {
 
 // checking deleteCustomer method
 
-		customerService.deleteCustomer(2);
+		customerService.deleteCustomer(customer2.getId());
 		string = "checking deleteCustomer method (Kobi Shasha has been deleted)";
 		TablesAndLinesUtils.printCustomersTable(customerService.getAllCustomers(), string);
 
@@ -68,7 +68,7 @@ public class CustomerServiceTest implements CommandLineRunner {
 		TablesAndLinesUtils.printLine();
 		System.out.println("checking getOneCustomer method (getting David Gluzman)");
 		System.out.println();
-		System.out.println(customerService.getOneCustomer(1));
+		System.out.println(customerService.getOneCustomer(customer.getId()).get());
 
 // checking isCustomerExist method
 
