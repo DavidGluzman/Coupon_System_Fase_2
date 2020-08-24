@@ -31,6 +31,9 @@ public class CompanyService {
 	public Optional<Company> getOneCompany(int companyId) {
 		return companyRepository.findById(companyId);
 	}
+	public Company getOneCompanyByEmailAndPassword(String email,String password) {
+		return companyRepository.findByEmailAndPassword(email, password);
+	}
 
 	public List<Company> getAllCompanies() {
 		return companyRepository.findAll();

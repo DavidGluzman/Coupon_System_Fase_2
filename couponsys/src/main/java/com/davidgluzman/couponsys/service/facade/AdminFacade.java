@@ -31,6 +31,7 @@ public class AdminFacade extends ClientFacade {
 	@Override
 	public boolean login(String email, String password) throws LoginException {
 		if (email.equals("admin@admin.com") && password.equals("admin")) {
+			System.out.println("Admin - successful login");
 			return true;
 		}
 		throw new LoginException("Admin login denied - wrong email or password");
@@ -79,14 +80,14 @@ public class AdminFacade extends ClientFacade {
 				companyService.getOneCompany(companyID).get().getPassword())) {
 			throw new InvalidActionException("company doesn't exist");
 		}
-		List<Coupon> coupons = couponService.getAllCoupons();
 
+		companyService.deleteCompany(companyID);
+		List<Coupon> coupons = couponService.getAllCoupons();
 		for (Coupon c : coupons) {
 			if (c.getCompanyID() == companyID) {
 				couponService.deleteCoupon(c.getId());
 			}
 		}
-		companyService.deleteCompany(companyID);
 
 	}
 	public void deleteCustomer(int customerID) {

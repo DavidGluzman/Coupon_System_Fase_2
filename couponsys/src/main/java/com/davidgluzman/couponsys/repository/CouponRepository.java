@@ -1,10 +1,13 @@
 package com.davidgluzman.couponsys.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.davidgluzman.couponsys.beans.Category;
 import com.davidgluzman.couponsys.beans.Coupon;
 
 public interface CouponRepository extends JpaRepository<Coupon, Integer> {
@@ -17,4 +20,8 @@ public interface CouponRepository extends JpaRepository<Coupon, Integer> {
 	@Modifying
 	@Query(value = "DELETE FROM coupon_system_v2.customer_coupons WHERE customer_id=:customerID and coupons_id=:couponID", nativeQuery = true)
 	void deleteCouponPurchase(int customerID, int couponID);
+
+	List<Coupon> findByCompanyID(int companyID);
+
+	
 }

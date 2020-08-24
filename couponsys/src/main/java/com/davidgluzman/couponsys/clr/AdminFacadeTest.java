@@ -16,13 +16,13 @@ import com.davidgluzman.couponsys.beans.Coupon;
 import com.davidgluzman.couponsys.beans.Customer;
 import com.davidgluzman.couponsys.exceptions.AlreadyExistException;
 import com.davidgluzman.couponsys.exceptions.InvalidActionException;
+import com.davidgluzman.couponsys.exceptions.LoginException;
 import com.davidgluzman.couponsys.service.facade.AdminFacade;
 import com.davidgluzman.couponsys.service.services.CouponService;
 import com.davidgluzman.couponsys.utils.DateUtils;
 import com.davidgluzman.couponsys.utils.HeadersArtUtils;
 import com.davidgluzman.couponsys.utils.PrintStringUtils;
 import com.davidgluzman.couponsys.utils.TablesAndLinesUtils;
-
 
 @Component
 @Order(4)
@@ -35,7 +35,25 @@ public class AdminFacadeTest implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 
 		HeadersArtUtils.printAdminFacadeHeader();
-
+		TablesAndLinesUtils.printLine();
+		
+//testing login
+		
+		System.out.println("testing exceptions - login():");
+		System.out.println();
+		try {
+			adminFacade.login("prohacker@hacking.com", "admin");
+		} catch (LoginException e) {
+			PrintStringUtils.printInitiatedException(e.getMessage(), "trying to login with wrong email");
+		}
+		try {
+			adminFacade.login("admin@admin.com", "pass");
+		} catch (LoginException e) {
+			PrintStringUtils.printInitiatedException(e.getMessage(), "trying to login with wrong password");
+		}
+		TablesAndLinesUtils.printLine();
+		adminFacade.login("admin@admin.com", "admin");
+		
 // getting all companies before testing	
 
 		TablesAndLinesUtils.printCompaniesTable(adminFacade.getAllCompanies(), "getting all companies before testing");
@@ -109,50 +127,53 @@ public class AdminFacadeTest implements CommandLineRunner {
 
 		TablesAndLinesUtils.printCustomersTable(adminFacade.getAllCustomers(), "getting all customers before testing");
 		TablesAndLinesUtils.printLine();
-		
+
 		System.out.println("testing exceptions - addCustomer():");
 		System.out.println();
-		
+
 		Customer customer = new Customer();
-		
+
 		customer.setFirstName("Stam");
 		customer.setLastName("Customer");
 		customer.setEmail("moshemoshe@email.com");
 		customer.setPassword("pass");
-		
+
 		try {
 			adminFacade.addCustomer(customer);
 		} catch (AlreadyExistException e) {
-			PrintStringUtils.printInitiatedException(e.getMessage(), "trying to add another customer with the same email");
+			PrintStringUtils.printInitiatedException(e.getMessage(),
+					"trying to add another customer with the same email");
 		}
-		
+
 		Customer customer2 = new Customer();
-		
+
 		customer2.setFirstName("Barak");
 		customer2.setLastName("Obama");
 		customer2.setEmail("barakobama@email.com");
 		customer2.setPassword("pass");
-		
+
 		adminFacade.addCustomer(customer2);
-		
+
 		TablesAndLinesUtils.printCustomersTable(adminFacade.getAllCustomers(),
 				"testing addCustomer method (Barak Obama has been added)");
 
 //testing updateCustomer()
-		
+
 		customer2.setFirstName("Donald");
 		customer2.setLastName("Trump");
-		
+
 		adminFacade.updateCustomer(customer2);
-		TablesAndLinesUtils.printCustomersTable(adminFacade.getAllCustomers(), "testing updateCustomer Method (Barak Obama has been changed to Donald Trump)");
-		
+		TablesAndLinesUtils.printCustomersTable(adminFacade.getAllCustomers(),
+				"testing updateCustomer Method (Barak Obama has been changed to Donald Trump)");
+
 //testing getOneCustomer()
-		
-		TablesAndLinesUtils.printCustomersTable(Arrays.asList(adminFacade.getOneCustomer(customer2.getId()).get()), "testing getOneCustomer method (getting Donald Trump)");
+
+		TablesAndLinesUtils.printCustomersTable(Arrays.asList(adminFacade.getOneCustomer(customer2.getId()).get()),
+				"testing getOneCustomer method (getting Donald Trump)");
 
 //testing deleteCompany()
-		
-		Coupon coupon=new Coupon();
+
+		Coupon coupon = new Coupon();
 		coupon.setTitle("1 ILS pizza");
 		coupon.setDescription("buy one pizza and get another one for 1 ILS");
 		coupon.setCompanyID(3);
@@ -162,24 +183,28 @@ public class AdminFacadeTest implements CommandLineRunner {
 		coupon.setPrice(70);
 		coupon.setStartDate(DateUtils.convertDate(new Date(2020, 6, 1)));
 		coupon.setEndDate(DateUtils.convertDate(new Date(2020, 11, 1)));
-		
+
 		company3.setCoupons(Arrays.asList(coupon));
 		adminFacade.updateCompany(company3);
-		
+
 		customer2.setCoupons(Arrays.asList(coupon));
 		adminFacade.updateCustomer(customer2);
-		
-		TablesAndLinesUtils.printCompaniesTable(adminFacade.getAllCompanies(), "all companies before deleteCompany method (Pitta Hut added a coupon)");
-		TablesAndLinesUtils.printCustomersTable(adminFacade.getAllCustomers(), "all customers before deleteCompany method (Donald Trump purchased a coupon)");
-		
+
+		TablesAndLinesUtils.printCompaniesTable(adminFacade.getAllCompanies(),
+				"all companies before deleteCompany method (Pitta Hut added a coupon)");
+		TablesAndLinesUtils.printCustomersTable(adminFacade.getAllCustomers(),
+				"all customers before deleteCompany method (Donald Trump purchased a coupon)");
+
 		adminFacade.deleteCompany(company3.getId());
-		
-		TablesAndLinesUtils.printCompaniesTable(adminFacade.getAllCompanies(), "all companies after deleteCompany method (Pitta Hut has been deleted)");
-		TablesAndLinesUtils.printCustomersTable(adminFacade.getAllCustomers(), "all customers after deleteCompany method (Donald Trump purchased coupon has been deleted)");
+
+		TablesAndLinesUtils.printCompaniesTable(adminFacade.getAllCompanies(),
+				"all companies after deleteCompany method (Pitta Hut has been deleted)");
+		TablesAndLinesUtils.printCustomersTable(adminFacade.getAllCustomers(),
+				"all customers after deleteCompany method (Donald Trump purchased coupon has been deleted)");
 
 //testing deleteCustomer()
-		
-		Coupon coupon2=new Coupon();
+
+		Coupon coupon2 = new Coupon();
 		coupon2.setTitle("PROMO - free bottle");
 		coupon2.setDescription("PROMOTION - get a free Fefsi bottle");
 		coupon2.setCompanyID(2);
@@ -189,39 +214,23 @@ public class AdminFacadeTest implements CommandLineRunner {
 		coupon2.setPrice(0);
 		coupon2.setStartDate(DateUtils.convertDate(new Date(2020, 7, 1)));
 		coupon2.setEndDate(DateUtils.convertDate(new Date(2020, 12, 1)));
-		
+
 		customer2.setCoupons(Arrays.asList(coupon2));
 		adminFacade.updateCustomer(customer2);
-		
-		TablesAndLinesUtils.printCustomersTable(adminFacade.getAllCustomers(), "all customers before deleteCustomer method (Donald Trump purchased a coupon)");
+
+		TablesAndLinesUtils.printCustomersTable(adminFacade.getAllCustomers(),
+				"all customers before deleteCustomer method (Donald Trump purchased a coupon)");
 		adminFacade.deleteCustomer(customer2.getId());
-		TablesAndLinesUtils.printCustomersTable(adminFacade.getAllCustomers(), "all customers after deleteCompany method (Donald Trump has been deleted)");
-		
-		
-		// testing deleteCompany()
+		TablesAndLinesUtils.printCustomersTable(adminFacade.getAllCustomers(),
+				"all customers after deleteCompany method (Donald Trump has been deleted)");
 
-//		Coupon coupon=new Coupon();
-//		coupon.setTitle("1 ILS pizza");
-//		coupon.setDescription("buy one pizza and get another one for 1 ILS");
-//		coupon.setCompanyID(3);
-//		coupon.setAmount(100);
-//		coupon.setCategory(Category.Food);
-//		coupon.setImage("image");
-//		coupon.setPrice(70);
-//		coupon.setStartDate(DateUtils.convertDate(new Date(2020, 6, 1)));
-//		coupon.setEndDate(DateUtils.convertDate(new Date(2020, 11, 1)));
-//		
-//		company3.setCoupons(Arrays.asList(coupon));
-//		adminFacade.updateCompany(company3);
-//		TablesAndLinesUtils.printCompaniesTable(adminFacade.getAllCompanies(), "Pitta Hut added a coupon (1 ILS pizza)");
-//		adminFacade.deleteCompany(company3.getId());
-//		
-//		Customer customer=new Customer();
-//		customer.setFirstName("Barak");
-//		customer.setLastName("Obama");
-//		customer.setPassword("pass");
-//		customer.setCoupons(Arrays.asList(coupon));
+//adding another company for testing CompanyFacadeTest.class
 
+		Company company4 = new Company();
+		company4.setName("Abidas");
+		company4.setEmail("service@abidas.com");
+		company4.setPassword("pass");
+	adminFacade.addCompany(company4);
 	}
 
 }
