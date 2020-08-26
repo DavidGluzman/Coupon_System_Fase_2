@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import com.davidgluzman.couponsys.beans.Company;
 import com.davidgluzman.couponsys.beans.Customer;
 import com.davidgluzman.couponsys.repository.CustomerRepository;
 
@@ -29,6 +30,10 @@ public class CustomerService {
 
 	public Optional<Customer> getOneCustomer(int customerId) {
 		return customerRepository.findById(customerId);
+	}
+
+	public Customer getOneCustomerByEmailAndPassword(String email, String password) {
+		return customerRepository.findByEmailAndPassword(email, password);
 	}
 
 	public List<Customer> getAllCustomers() {

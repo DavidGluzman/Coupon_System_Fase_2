@@ -150,7 +150,60 @@ public class CompanyFacadeTest implements CommandLineRunner {
 		companyFacade.deleteCoupon(7);
 		TablesAndLinesUtils.printCouponsTable(companyFacade.getAllCoupons(), "testing deleteCoupon method (all Abidas coupons after deleting GAME)");
 
+		TablesAndLinesUtils.printLine();
 		
+//adding coupon for testing CustomerFacadeTest.class
 		
+		Coupon coupon4 = new Coupon();
+		coupon4.setAmount(0);
+		coupon4.setCategory(Category.Apparel);
+		coupon4.setCompanyID(4);
+		coupon4.setDescription("25% off on tshirt");
+		coupon4.setImage("image");
+		coupon4.setPrice(150);
+		coupon4.setTitle("Sale");
+		coupon4.setStartDate(DateUtils.convertDate(new Date(2020, 1, 1)));
+		coupon4.setEndDate(DateUtils.convertDate(new Date(2020, 11, 1)));
+	
+	companyFacade.addCoupon(coupon4);
+	
+	Coupon coupon5 = new Coupon();
+	coupon5.setAmount(1);
+	coupon5.setCategory(Category.Apparel);
+	coupon5.setCompanyID(4);
+	coupon5.setDescription("25% off on tshirt");
+	coupon5.setImage("image");
+	coupon5.setPrice(150);
+	coupon5.setTitle("coupon");
+	coupon5.setStartDate(DateUtils.convertDate(new Date(2020, 1, 1)));
+	coupon5.setEndDate(DateUtils.convertDate(new Date(2020, 6, 1)));
+	
+	companyFacade.addCoupon(coupon5);
+	
+	Coupon coupon6 = new Coupon();
+	coupon6.setAmount(1);
+	coupon6.setCategory(Category.Apparel);
+	coupon6.setCompanyID(4);
+	coupon6.setDescription("25% off on tshirt");
+	coupon6.setImage("image");
+	coupon6.setPrice(150);
+	coupon6.setTitle("75%");
+	coupon6.setStartDate(DateUtils.convertDate(new Date(2020, 1, 1)));
+	coupon6.setEndDate(DateUtils.convertDate(new Date(2020, 10, 1)));
+	
+	companyFacade.addCoupon(coupon6);
+	
+	Coupon coupon7 = new Coupon();
+	coupon7.setAmount(100);
+	coupon7.setCategory(Category.Sport);
+	coupon7.setCompanyID(4);
+	coupon7.setDescription("25% off on tshirt");
+	coupon7.setImage("image");
+	coupon7.setPrice(250);
+	coupon7.setTitle("15%");
+	coupon7.setStartDate(DateUtils.convertDate(new Date(2020, 1, 1)));
+	coupon7.setEndDate(DateUtils.convertDate(new Date(2020, 10, 1)));
+	
+	companyFacade.addCoupon(coupon7);
 	}
 }
