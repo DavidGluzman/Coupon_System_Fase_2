@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import com.davidgluzman.couponsys.beans.Company;
@@ -17,16 +18,9 @@ import com.davidgluzman.couponsys.service.services.CouponService;
 import com.davidgluzman.couponsys.service.services.CustomerService;
 
 @Service
+@Scope("prototype")
 public class AdminFacade extends ClientFacade {
 
-	@Autowired
-	private CompanyService companyService;
-
-	@Autowired
-	private CustomerService customerService;
-
-	@Autowired
-	private CouponService couponService;
 
 	@Override
 	public boolean login(String email, String password) throws LoginException {

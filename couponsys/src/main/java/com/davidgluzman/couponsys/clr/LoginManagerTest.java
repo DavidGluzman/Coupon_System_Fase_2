@@ -22,6 +22,8 @@ public void run(String... args) throws Exception {
 	loginManager.login("admin@admin.com", "admin", ClientType.Administrator);
 	loginManager.login("service@abidas.com", "pass", ClientType.Company);
 	loginManager.login("moshemoshe@email.com", "pass", ClientType.Customer);
+	System.out.println();
+	System.out.println("testing exceptions - login():");
 	try {
 		loginManager.login("admin@admin.com", "admin", ClientType.Company);
 	} catch (LoginException e) {

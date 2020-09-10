@@ -23,14 +23,6 @@ import lombok.Setter;
 @Service
 public class CompanyFacade extends ClientFacade {
 
-	@Autowired
-	private CompanyService companyService;
-
-	@Autowired
-	private CustomerService customerService;
-
-	@Autowired
-	private CouponService couponService;
 	@Getter
 	@Setter
 	private int companyID;

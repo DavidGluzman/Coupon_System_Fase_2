@@ -12,7 +12,7 @@ import com.davidgluzman.couponsys.beans.Coupon;
 import com.davidgluzman.couponsys.service.services.CouponService;
 
 @Component
-public class DailyJob implements Runnable{
+public class DailyJob {
 
 	private boolean quit = false;
 
@@ -26,7 +26,6 @@ public DailyJob() {
 
 
 @Scheduled(fixedDelay = 1000*10)
-@Override
 public void run() {
     while (!quit) {
     	System.out.println("DailyJob woke up...");
