@@ -1,4 +1,4 @@
-package com.davidgluzman.couponsys.service.services;
+package com.davidgluzman.couponsys.DBDAO;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,7 +12,7 @@ import com.davidgluzman.couponsys.beans.Customer;
 import com.davidgluzman.couponsys.repository.CustomerRepository;
 
 @Service
-public class CustomerService {
+public class CustomerDBDAO {
 	@Autowired
 	public CustomerRepository customerRepository;
 
@@ -28,8 +28,8 @@ public class CustomerService {
 		customerRepository.deleteById(customerId);
 	}
 
-	public Optional<Customer> getOneCustomer(int customerId) {
-		return customerRepository.findById(customerId);
+	public Customer getOneCustomer(int customerId) {
+		return customerRepository.findById(customerId).get();
 	}
 
 	public Customer getOneCustomerByEmailAndPassword(String email, String password) {

@@ -1,4 +1,4 @@
-package com.davidgluzman.couponsys.service.facade;
+package com.davidgluzman.couponsys.facade;
 
 import java.util.List;
 import java.util.Optional;
@@ -7,20 +7,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
+import com.davidgluzman.couponsys.DBDAO.CompanyDBDAO;
+import com.davidgluzman.couponsys.DBDAO.CouponDBDAO;
+import com.davidgluzman.couponsys.DBDAO.CustomerDBDAO;
 import com.davidgluzman.couponsys.beans.Company;
 import com.davidgluzman.couponsys.beans.Coupon;
 import com.davidgluzman.couponsys.beans.Customer;
 import com.davidgluzman.couponsys.exceptions.AlreadyExistException;
 import com.davidgluzman.couponsys.exceptions.InvalidActionException;
 import com.davidgluzman.couponsys.exceptions.LoginException;
-import com.davidgluzman.couponsys.service.services.CompanyService;
-import com.davidgluzman.couponsys.service.services.CouponService;
-import com.davidgluzman.couponsys.service.services.CustomerService;
 
 @Service
-@Scope("prototype")
 public class AdminFacade extends ClientFacade {
-
 
 	@Override
 	public boolean login(String email, String password) throws LoginException {
@@ -32,77 +30,79 @@ public class AdminFacade extends ClientFacade {
 	}
 
 	public List<Company> getAllCompanies() {
-		return companyService.getAllCompanies();
+		return companyDBDAO.getAllCompanies();
 	}
 
 	public List<Customer> getAllCustomers() {
-		return customerService.getAllCustomers();
+		return customerDBDAO.getAllCustomers();
 	}
 
-	public Optional<Company> getOneCompany(int companyID) {
-		return companyService.getOneCompany(companyID);
+	public Company getOneCompany(int companyID) {
+		return companyDBDAO.getOneCompany(companyID);
 	}
 
-	public Optional<Customer> getOneCustomer(int customerID) {
-		return customerService.getOneCustomer(customerID);
+	public Customer getOneCustomer(int customerID) {
+		return customerDBDAO.getOneCustomer(customerID);
 	}
 
 	public void addCompany(Company company) throws AlreadyExistException {
-		List<Company> companies = companyService.getAllCompanies();
+		List<Company> companies = companyDBDAO.getAllCompanies();
 		for (Company c : companies) {
 			if (c.getName().equals(company.getName()) || c.getEmail().equals(company.getEmail())) {
 				throw new AlreadyExistException("Company with this email or name is already exists");
 			}
 		}
-		companyService.addCompany(company);
+		companyDBDAO.addCompany(company);
 	}
 
 	public void updateCompany(Company company) throws InvalidActionException {
-		if (!companyService.isCompanyExist(companyService.getOneCompany(company.getId()).get().getEmail(),
-				companyService.getOneCompany(company.getId()).get().getPassword())) {
+		if (!companyDBDAO.isCompanyExist(companyDBDAO.getOneCompany(company.getId()).getEmail(),
+				companyDBDAO.getOneCompany(company.getId()).getPassword())) {
 			throw new InvalidActionException("company doesn't exist");
 		}
-		String companyName = companyService.getOneCompany(company.getId()).get().getName();
+		String companyName = companyDBDAO.getOneCompany(company.getId()).getName();
 		if (!companyName.equalsIgnoreCase(company.getName())) {
 			throw new InvalidActionException("changing companys name is not allowed");
 		}
-		companyService.updateCompany(company);
+		companyDBDAO.updateCompany(company);
 	}
 
 	public void deleteCompany(int companyID) throws InvalidActionException {
-		if (!companyService.isCompanyExist(companyService.getOneCompany(companyID).get().getEmail(),
-				companyService.getOneCompany(companyID).get().getPassword())) {
+		if (!companyDBDAO.isCompanyExist(companyDBDAO.getOneCompany(companyID).getEmail(),
+				companyDBDAO.getOneCompany(companyID).getPassword())) {
 			throw new InvalidActionException("company doesn't exist");
 		}
 
-		companyService.deleteCompany(companyID);
-		List<Coupon> coupons = couponService.getAllCoupons();
+		companyDBDAO.deleteCompany(companyID);
+		List<Coupon> coupons = couponDBDAO.getAllCoupons();
 		for (Coupon c : coupons) {
 			if (c.getCompanyID() == companyID) {
-				couponService.deleteCoupon(c.getId());
+				couponDBDAO.deleteCoupon(c.getId());
 			}
 		}
 
 	}
+
 	public void deleteCustomer(int customerID) {
-		customerService.deleteCustomer(customerID);
+		customerDBDAO.deleteCustomer(customerID);
 	}
+
 	public void addCustomer(Customer customer) throws AlreadyExistException {
-		List<Customer> customers = customerService.getAllCustomers();
+		List<Customer> customers = customerDBDAO.getAllCustomers();
 		for (Customer c : customers) {
 			if (c.getEmail().equals(customer.getEmail())) {
 				throw new AlreadyExistException("customer with this email is already exists");
 			}
 		}
-		customerService.addCustomer(customer);
+		customerDBDAO.addCustomer(customer);
 	}
 
 	public void updateCustomer(Customer customer) throws InvalidActionException {
-		if (!customerService.isCustomerExist(customerService.getOneCustomer(customer.getId()).get().getEmail(),
-				customerService.getOneCustomer(customer.getId()).get().getPassword())) {
+		if (!customerDBDAO.isCustomerExist(customerDBDAO.getOneCustomer(customer.getId()).getEmail(),
+				customerDBDAO.getOneCustomer(customer.getId()).getPassword())) {
 			throw new InvalidActionException("customer doesn't exist");
 		}
-		customerService.updateCustomer(customer);
+		customerDBDAO.updateCustomer(customer);
 	}
 
 }

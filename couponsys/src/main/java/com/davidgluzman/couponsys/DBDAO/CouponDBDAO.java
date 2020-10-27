@@ -1,4 +1,4 @@
-package com.davidgluzman.couponsys.service.services;
+package com.davidgluzman.couponsys.DBDAO;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,13 +12,18 @@ import com.davidgluzman.couponsys.beans.Coupon;
 import com.davidgluzman.couponsys.repository.CouponRepository;
 
 @Service
-public class CouponService {
+public class CouponDBDAO {
 	@Autowired
 	private CouponRepository couponRepository;
 
 	public void addCoupon(Coupon coupon) {
 		couponRepository.save(coupon);
+		connectCoupon(coupon);
 	}
+	public void connectCoupon(Coupon coupon) {
+		couponRepository.connectCoupon(coupon.getCompanyID(), coupon.getId());;
+	}
+	
 
 	public void updateCoupon(Coupon coupon) {
 		couponRepository.saveAndFlush(coupon);
@@ -28,8 +33,8 @@ public class CouponService {
 		couponRepository.deleteById(couponId);
 	}
 
-	public Optional<Coupon> getOneCoupon(int couponId) {
-		return couponRepository.findById(couponId);
+	public Coupon getOneCoupon(int couponId) {
+		return couponRepository.findById(couponId).get();
 	}
 
 	public List<Coupon> getAllCoupons() {

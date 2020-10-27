@@ -20,6 +20,11 @@ public interface CouponRepository extends JpaRepository<Coupon, Integer> {
 	@Modifying
 	@Query(value = "DELETE FROM coupon_system_v2.customer_coupons WHERE customer_id=:customerID and coupons_id=:couponID", nativeQuery = true)
 	void deleteCouponPurchase(int customerID, int couponID);
+	
+	@Transactional
+	@Modifying
+	@Query(value = "INSERT INTO coupon_system_v2.company_coupons (company_id, coupons_id) VALUES (:companyID, :couponID)", nativeQuery = true)
+	void connectCoupon(int companyID, int couponID);
 
 	List<Coupon> findByCompanyID(int companyID);
 
